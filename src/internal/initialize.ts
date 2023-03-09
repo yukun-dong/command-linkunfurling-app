@@ -2,6 +2,8 @@ import { HelloWorldCommandHandler } from "../helloworldCommandHandler";
 import { BotBuilderCloudAdapter } from "@microsoft/teamsfx";
 import ConversationBot = BotBuilderCloudAdapter.ConversationBot;
 import config from "./config";
+import { MainLinkUnfurlingHandler, DevLinkUnfurlingHandler } from "../myLinkUnfurlingHandler";
+import { MessageExtension } from "../sdk/messageExtension";
 
 // Create the command bot and register the command handlers for your app.
 // You can also use the commandApp.command.registerCommands to register other commands
@@ -19,3 +21,11 @@ export const commandApp = new ConversationBot({
     commands: [new HelloWorldCommandHandler()],
   },
 });
+
+export const linkUnfurlingApp = new MessageExtension({
+  adapter: commandApp.adapter,
+  linkUnfurling: {
+    enabled: true,
+    links: [new MainLinkUnfurlingHandler(), new DevLinkUnfurlingHandler()]
+  }
+})
